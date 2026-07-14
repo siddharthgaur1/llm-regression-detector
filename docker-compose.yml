@@ -1,0 +1,17 @@
+services:
+  eval:
+    build: .
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+      - ./prompts:/app/prompts
+    command: ["--prompt-version", "v1"]
+
+  dashboard:
+    build: .
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "8501:8501"
+    entrypoint: ["streamlit", "run", "dashboard/app.py", "--server.address=0.0.0.0"]

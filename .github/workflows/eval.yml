@@ -1,0 +1,56 @@
+name: LLM Eval
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "prompts/**"
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Detect changed prompt version
+        id: prompt
+        run: |
+          changed=$(git diff --name-only HEAD^ HEAD -- prompts/ | head -n1)
+          version=$(basename "$changed" .yaml)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Run eval
+        id: run_eval
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python -m src.runner --prompt-version "${{ steps.prompt.outputs.version }}" --slack
+
+      - name: Post PR comment
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const runsDir = 'data/runs';
+            const runs = fs.readdirSync(runsDir).sort();
+            const latest = runs[runs.length - 1];
+            const results = JSON.parse(fs.readFileSync(`${runsDir}/${latest}/results.json`, 'utf8'));
+            const passRate = results.results.filter(r => r.passed).length / results.results.length;
+            const status = process.env.EVAL_EXIT_CODE === '0' ? '✅' : '🔴';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `${status} Eval run \`${latest}\`: pass rate ${(passRate * 100).toFixed(1)}%`,
+            });

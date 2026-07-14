@@ -167,3 +167,8 @@ Then, with the app open at `http://localhost:8501`:
 
 Drop the images in a `docs/screenshots/` folder and reference them here as
 `![Overview](docs/screenshots/overview.png)` once captured.
+
+## Related projects
+
+- [rag-hybrid-search](https://github.com/siddharthgaur1/rag-hybrid-search) — hybrid dense+BM25 RAG pipeline; its eval output is shaped to plug into this project's `comparator.py`/`alerting.py` directly (see that repo's "Connection to Project 1").
+- [ipo-gmp](https://github.com/siddharthgaur1/ipo-gmp) — XGBoost IPO listing-return predictor.

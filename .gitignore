@@ -1,5 +1,9 @@
 __pycache__/
 *.pyc
 .env
-data/runs/
+data/runs/*
+!data/runs/v1_demo/
+!data/runs/v1_demo/**
+!data/runs/v2_demo/
+!data/runs/v2_demo/**
 .venv/

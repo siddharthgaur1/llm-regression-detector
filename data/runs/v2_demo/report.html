@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Eval Report — v2_demo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: -apple-system, Segoe UI, sans-serif; margin: 2rem; color: #1a1a1a; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 14px; }
+  th { background: #f4f4f4; }
+  .scorecard { display: flex; gap: 1.5rem; margin: 1rem 0; }
+  .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem 1.5rem; }
+  .ok { color: #1a7f37; }
+  .warning { color: #9a6700; }
+  .critical { color: #cf222e; }
+  .regressed { background: #fff1f0; }
+</style>
+</head>
+<body>
+<h1>Eval Report — v2_demo</h1>
+<p>Prompt version: <b>v2</b> | Model: <b>gpt-4o-mini</b> | Timestamp: 2026-07-14T15:04:44Z | Est. cost: $0.0285</p>
+
+<div class="scorecard">
+  <div class="card"><div>Pass rate</div><h2>93.3%</h2></div>
+  <div class="card"><div>Baseline</div><h2>81.7%</h2></div>
+  <div class="card"><div>Delta</div><h2 class="ok">+11.7%</h2></div>
+  <div class="card"><div>Regressions</div><h2>2</h2></div>
+  <div class="card"><div>Improvements</div><h2>9</h2></div>
+</div>
+
+<h2>Regressed cases</h2>
+<table><tr><th>Test case</th><th>Baseline output</th><th>Current output</th></tr><tr class='regressed'><td>acct-010</td><td>account / [demo] mock summary for acct-010</td><td>technical / [demo] mock summary for acct-010</td></tr><tr class='regressed'><td>gen-005</td><td>general / [demo] mock summary for gen-005</td><td>billing / [demo] mock summary for gen-005</td></tr></table>
+
+<h2>Trend (last 2 runs)</h2>
+<canvas id="trend" height="80"></canvas>
+<script>
+  new Chart(document.getElementById('trend'), {
+    type: 'line',
+    data: {
+      labels: ["v1_demo", "v2_demo"],
+      datasets: [{ label: 'Pass rate', data: [0.8166666666666667, 0.9333333333333333], borderColor: '#1a7f37', tension: 0.2 }]
+    },
+    options: { scales: { y: { min: 0, max: 1 } } }
+  });
+</script>
+</body>
+</html>

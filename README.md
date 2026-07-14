@@ -143,27 +143,5 @@ single time — but the tenth edit has quietly walked the pass rate down 15%
 from where it started. `moving_average_drift()` catches that by comparing
 the latest run to a 7-run trailing average instead of just run N-1.
 
-## Screenshots
-
-The dashboard isn't screenshotted here — it needs live run data and a
-browser to render. To capture it yourself:
-
-```bash
-python -m src.runner --prompt-version v1
-python -m src.runner --prompt-version v2
-streamlit run dashboard/app.py
-```
-
-Then, with the app open at `http://localhost:8501`:
-
-1. **Overview** — screenshot the "Recent runs" table showing both `v1` and
-   `v2` runs with their pass/warn/fail status.
-2. **Trends** — screenshot the three trend charts (accuracy, summary
-   quality, latency) once at least 2-3 runs exist.
-3. **Run comparison** — select the `v1` run as baseline and `v2` as current,
-   screenshot the regressions/improvements output.
-4. **Test case explorer** — filter to `difficulty: hard`, screenshot the
-   table to show where the two prompt versions actually diverge.
-
-Drop the images in a `docs/screenshots/` folder and reference them here as
+ere as
 `![Overview](docs/screenshots/overview.png)` once captured.

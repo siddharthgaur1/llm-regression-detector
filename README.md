@@ -1,5 +1,7 @@
 # llm-regression-detector
 
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Prompts drift. A tweak that fixes one failure mode quietly breaks three
 others, and unless something is watching, the first signal is a support
 ticket. This is a CI harness for an LLM-powered support-email classifier: it

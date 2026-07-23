@@ -1,6 +1,46 @@
 # llm-regression-detector
 
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+**A CI harness that catches prompt regressions: runs a golden set through the changed prompt, scores it, and fails the build when quality drops. Dashboard is clickable with no key.**
+
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Dashboard: no key](https://img.shields.io/badge/dashboard-no%20key%20needed-brightgreen)](#run-with-zero-api-keys)
+
+> **Live demo:** _pending deploy to Hugging Face Spaces (free CPU)._ The dashboard
+> reads **committed** evaluation runs, so it is fully clickable with no API key.
+> Screenshot below is it running locally — real v1 vs v2 runs, unedited.
+
+![Dashboard: v1 (fail, 0.82) vs v2 (pass, 0.93) with accuracy/quality/latency trends](assets/demo.png)
+
+## Run with zero API keys
+
+```bash
+git clone https://github.com/siddharthgaur1/llm-regression-detector
+cd llm-regression-detector
+pip install -r requirements.txt
+streamlit run dashboard/app.py     # reads committed demo runs — no key needed
+```
+
+The **dashboard makes no LLM calls** — it renders the committed `v1_demo`/`v2_demo`
+runs (v1 fails at 0.82 pass-rate, v2 passes at 0.93), so the comparison and trend
+charts are real and clickable with nothing configured.
+
+**Run a real eval** (needs a model). It speaks the OpenAI wire format, so it runs
+free on Groq or a local Ollama:
+
+```bash
+export OPENAI_API_KEY=gsk_...                       # free: https://console.groq.com/keys
+export OPENAI_BASE_URL=https://api.groq.com/openai/v1
+python -m src.runner --prompt-version v2 --classifier-model llama-3.3-70b-versatile
+```
+
+| Variable | Required | Default | How to get it free |
+| --- | --- | --- | --- |
+| `OPENAI_API_KEY` | Only to run an eval (not for the dashboard) | — | Groq (free) or a local Ollama. |
+| `OPENAI_BASE_URL` | No | OpenAI | Set to Groq/Ollama to run the eval free. |
+| `SLACK_WEBHOOK_URL` | No | _(off)_ | Optional regression alerts; no-ops if unset. |
+
+Security notes: [SECURITY.md](SECURITY.md).
+
+---
 
 Prompts drift. A tweak that fixes one failure mode quietly breaks three
 others, and unless something is watching, the first signal is a support

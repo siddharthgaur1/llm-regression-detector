@@ -4,9 +4,9 @@
 
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Dashboard: no key](https://img.shields.io/badge/dashboard-no%20key%20needed-brightgreen)](#run-with-zero-api-keys)
 
-> **Live demo:** _pending deploy to Hugging Face Spaces (free CPU)._ The dashboard
-> reads **committed** evaluation runs, so it is fully clickable with no API key.
-> Screenshot below is it running locally — real v1 vs v2 runs, unedited.
+> **▶ Live demo: https://siddharthgaur1-siddharthllm-regression-detector-dashboardapp.streamlit.app/**
+> — clickable with **no API key**: the dashboard reads committed v1/v2 runs (v1 fails
+> at 0.82, v2 passes at 0.93). (First load may take ~30s if the app is asleep.)
 
 ![Dashboard: v1 (fail, 0.82) vs v2 (pass, 0.93) with accuracy/quality/latency trends](assets/demo.png)
 

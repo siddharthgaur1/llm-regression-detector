@@ -11,6 +11,7 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import sys
 import time
 from pathlib import Path
@@ -113,7 +114,9 @@ async def run_eval(
     prompt_config = PromptConfig.load(prompt_path)
     test_cases = load_golden_dataset()
 
-    client = AsyncOpenAI()
+    # OPENAI_BASE_URL lets the eval run against any OpenAI-compatible endpoint —
+    # Groq or a local Ollama — so a regression sweep costs nothing. Empty = OpenAI.
+    client = AsyncOpenAI(base_url=os.environ.get("OPENAI_BASE_URL") or None)
     semaphore = asyncio.Semaphore(MAX_CONCURRENCY)
     tasks = [
         run_one_case(client, semaphore, prompt_config, classifier_model, judge_model, tc)
